@@ -1,4 +1,4 @@
-from pyimagesearch.tempimage import TempImage
+from imageconfig.tempimage import TempImage
 import argparse
 import warnings
 import datetime
