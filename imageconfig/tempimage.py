@@ -3,10 +3,10 @@ import uuid
 import os
 
 class TempImage:
-	def __init__(self, basePath="./imageconfig/images", ext=".jpg"):
+	def __init__(self, frequency, basePath="./", ext=".jpg"):
 		# construct the file path
-		self.path = "{base_path}/{rand}{ext}".format(base_path=basePath,
-			rand=str(uuid.uuid4()), ext=ext)
+		self.path = "{base_path}/{frequency}{ext}".format(base_path=basePath,
+			frequency = frequency ,ext=ext)
 
 	def cleanup(self):
 		# remove the file
