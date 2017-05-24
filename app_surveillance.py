@@ -8,6 +8,17 @@ import cv2
 import os
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
+import random
+import socket, select
+from time import gmtime, strftime
+from random import randint
+
+HOST = '127.0.0.1'
+PORT = 6666
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = (HOST, PORT)
+sock.connect(server_address)
 
 app = Flask(__name__)
 
@@ -20,6 +31,7 @@ def index():
 @app.route('/streaming')
 def surveillance():
 
+	i = 1
 	with open('conf.json') as data_file:
 		conf = json.load(data_file)
 
@@ -63,6 +75,13 @@ def surveillance():
 		(cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
 			cv2.CHAIN_APPROX_SIMPLE)
 
+		cv2.imshow("Security Feed", frame)
+  		key = cv2.waitKey(1) & 0xFF
+
+  		if key == ord("q"):
+  			break
+
+		
 		for c in cnts:
 			if cv2.contourArea(c) < conf["min_area"]:
 				continue
@@ -78,29 +97,55 @@ def surveillance():
 			0.35, (0, 0, 255), 1)
 
 		if text == "Occupied":
+			print("In 1st if")
 
 			if (timestamp - lastUploaded).seconds >= conf["min_upload_seconds"]:
 				motionCounter += 1
+				print("In 2nd if")
 
 				if motionCounter >= conf["min_motion_frames"]:
+					print("In 3rd if")
 
-					t = TempImage()
+					t = TempImage(i)
 					cv2.imwrite(t.path, frame)
-
 					lastUploaded = timestamp
-					motionCounter = 0
+					motionCounter = 0  
+					# file = os.path.join(os.path.relpath(__main__), str(t.path))
+					file = t
+					i = i+1
+					# myfile = open(file, 'rb')
+					bytes = cv2.imread(t, 1)
+					# bytes = myfile.read()
+					print(bytes)
+    				#bytes = myfile.read()
+    				sock.sendall(bytes)
+    				
 
-		else:
-			motionCounter = 0
+        			# check what server send
+        			answer = sock.recv(4096)
+        			print 'answer = %s' % answer
 
-		if conf["show_video"]:
-			cv2.imshow("Security Feed", frame)
-			key = cv2.waitKey(1) & 0xFF
+        			if answer == 'GOT IMAGE' :
+        				print("In the 4th if")
+        				sock.sendall("BYE BYE ")
+        				print 'Image successfully send to server'
 
-			if key == ord("q"):
-				break
+        			else:
+        				print("In 4th if else")
+        			
+        			myfile.close()
 
-	return;
+        		else:
+        			print("In 3rd if else")
+       		else:
+    			print("In 2nd if else")
+
+    	else:
+  			print("In 1st if else")
+  			motionCounter = 0
+
+  		
+  	return;
 
 if __name__ == '__main__':
     app.run(
