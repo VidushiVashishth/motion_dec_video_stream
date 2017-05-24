@@ -118,20 +118,20 @@ def surveillance():
 					# bytes = myfile.read()
 					print(bytes)
     				#bytes = myfile.read()
-    				sock.sendall(bytes)
+    					sock.sendall(bytes)
     				
 
         			# check what server send
-        			answer = sock.recv(4096)
-        			print 'answer = %s' % answer
+        				answer = sock.recv(4096)
+        				print 'answer = %s' % answer
 
-        			if answer == 'GOT IMAGE' :
-        				print("In the 4th if")
-        				sock.sendall("BYE BYE ")
-        				print 'Image successfully send to server'
+        				if answer == 'GOT IMAGE' :
+        					print("In the 4th if")
+        					sock.sendall("BYE BYE ")
+        					print 'Image successfully send to server'
 
-        			else:
-        				print("In 4th if else")
+        				else:
+        					print("In 4th if else")
         			
         			myfile.close()
 
