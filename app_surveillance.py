@@ -105,19 +105,18 @@ def surveillance():
 
 					t = TempImage(i)
 					cv2.imwrite(t.path, frame)
-					if(i > 2 and i < 3) :
-						myfile = open(t.path, 'rb')
-						bytes = myfile.read()
-						sock.sendall(bytes)
-						answer = sock.recv(4096)
-						print 'answer = %s' % answer
+					myfile = open(t.path, 'rb')
+					bytes = myfile.read()
+					sock.sendall(bytes)
+					answer = sock.recv(4096)
+					print 'answer = %s' % answer
 
-						if answer == 'GOT IMAGE':
-							sock.sendall('BYE BYE')
-							print "Image sucessfully sent to the server"
+					if answer == 'GOT IMAGE':
+						sock.sendall('BYE BYE')
+						print "Image sucessfully sent to the server"
 
-						myfile.close()
-						sock.close()
+					myfile.close()
+					sock.close()
 
 
 					i = i+1
