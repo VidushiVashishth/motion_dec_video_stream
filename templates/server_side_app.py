@@ -1,10 +1,11 @@
 import random
+import os
 import socket, select
 from time import gmtime, strftime
 from random import randint
 
 imgcounter = 1
-basename = "image%s.png"
+basename = "\testing-images\image%s.png"
 
 HOST = '127.0.0.1'
 PORT = 6666
@@ -18,6 +19,11 @@ server_socket.bind((HOST, PORT))
 server_socket.listen(10)
 
 connected_clients_sockets.append(server_socket)
+
+
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+rel_path = basename % imgcounter
+abs_file_path = os.path.join(script_dir, rel_path)
 
 while True:
 
@@ -38,7 +44,7 @@ while True:
 
                 if data:
 
-                    myfile = open(basename % imgcounter, 'wb')
+                    myfile = open(abs_file_path, 'wb')
                     myfile.write(data)
 
                     data = sock.recv(40960000)
