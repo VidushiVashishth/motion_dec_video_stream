@@ -33,8 +33,6 @@ def surveillance():
 		conf = json.load(data_file)
 
 	warnings.filterwarnings("ignore")
-
-
 	camera = cv2.VideoCapture(0)
 
 	print "[INFO] warming up..."
@@ -42,6 +40,7 @@ def surveillance():
 	avg = None
 	lastUploaded = datetime.datetime.now()
 	motionCounter = 0
+	Imagecounter = 0
 
 	#fgbg = cv2.BackgroundSubtractorMOG()   // variable background v/s fixed background
 
@@ -104,6 +103,7 @@ def surveillance():
 				if motionCounter >= conf["min_motion_frames"]:
 
 					t = TempImage(i)
+					i = i + 1 
 					cv2.imwrite(t.path, frame)
 					myfile = open(t.path, 'rb')
 					bytes = myfile.read()
@@ -115,18 +115,22 @@ def surveillance():
 						sock.sendall('BYE BYE')
 						print "Image sucessfully sent to the server"
 
+					Imagecounter = Imagecounter + 1
 					myfile.close()
 					sock.close()
 
 
-					i = i+1
 					lastUploaded = timestamp
 					motionCounter = 0
 		else:
 
 			motionCounter = 0
 
-	return
+		if Imagecounter > 2:
+			camera.release()
+			break
+
+	return "One stream done"
 
 if __name__ == '__main__':
     app.run(
