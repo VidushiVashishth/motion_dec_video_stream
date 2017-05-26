@@ -4,6 +4,6 @@ A facial recognition software for detecting faces from web cam streams or videos
 
 # How to run the app
 
-1) go into the templates directory and run the server_side_app.
-2) run the app_surveillance next 
-3) open web browser and type in the local address 127.0.0.1
+1) Run the server_side_app.py script in the terminal first.
+2) Run the app_surveillance.py script next. 
+3) Open web browser and go to the local address 127.0.0.1
