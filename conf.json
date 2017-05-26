@@ -4,7 +4,7 @@
 	"dropbox_key": "YOUR_DROPBOX_KEY",
 	"dropbox_secret": "YOUR_DROPBOX_SECRET",
 	"dropbox_base_path": "YOUR_DROPBOX_APP_PATH",
-	"min_upload_seconds": 0.5,
+	"min_upload_seconds": 2,
 	"min_motion_frames": 5,
 	"camera_warmup_time": 2.5,
 	"delta_thresh": 5,
