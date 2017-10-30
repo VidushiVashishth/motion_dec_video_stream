@@ -1,6 +1,8 @@
 # face_rec_video_stream
 A facial recognition software for detecting faces from web cam streams or videos.
 
+# Dependencies
+python 2.7 and above
 
 # How to run the app
 
