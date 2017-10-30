@@ -2,7 +2,7 @@
 A facial recognition software for detecting faces from web cam streams or videos.
 
 # Dependencies
-python 2.7 and above
+python 2.7
 
 # How to run the app
 
